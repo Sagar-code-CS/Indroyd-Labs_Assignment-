@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>KBC Game Player</title>
+</head>
+<body>
+    <h1>Welcome to the KBC Game</h1>
+    <input type="text" id="playerName" placeholder="Enter your name">
+    <button onclick="submitAnswer()">Submit Answer</button>
+    
+    <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+    <script>
+        const socket = io('http://localhost:3000');
+        
+        function submitAnswer() {
+            const playerName = document.getElementById('playerName').value;
+            const answer = prompt('Enter your answer:'); 
+            
+            socket.emit('answer', { playerName, answer });
+        }
+
+        socket.on('correctAnswer', (data) => {
+            alert(`Congratulations, ${data.playerName}! Your answer is correct.`);
+        });
+
+        socket.on('wrongAnswer', () => {
+            alert('Sorry, your answer is wrong.');
+        });
+    </script>
+</body>
+</html>
